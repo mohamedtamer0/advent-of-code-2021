@@ -1,16 +1,17 @@
 package day01
 
-import java.io.File
+import readInput
 
 fun main() {
+    val dayId = "02"
+    val instr = readInput("Day${dayId}")
+        .map { it.split(' ') }
+        .map { (c, p) -> c to p.toInt() }
+        .map { (it.first == "forward") to (it.second * if (it.first == "up") -1 else 1) }
 
+    val a = instr.scan(0) { s, (f, p) -> s + (if (f) 0 else p) } // aim, prefix sum
+    val x = instr.filter { it.first }.sumOf { it.second } // final horizontal position
 
-
-
-//    val testInput = readInput("Day02_test")
-//    check(part1(testInput) == 150)
-//
-//    val input = readInput("Day02")
-//    println(part1(input))
-//    println(part2(input))
+    println(x * instr.filter { !it.first }.sumOf { it.second })
+    println(x * instr.mapIndexed { i, (f, p) -> if (f) p*a[i] else 0 }.sum())
 }
